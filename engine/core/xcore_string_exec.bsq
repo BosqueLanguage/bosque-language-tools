@@ -1,0 +1,13 @@
+namespace Core;
+
+#if STRIPPED_CORE
+#else
+#if EXEC_LIBS
+namespace StringOps {
+    function s_empty(s: String): Bool = @string_empty;
+    function s_size(s: String): Nat = @string_size;
+    function s_bytes(s: String): Nat = @string_bytes;
+}
+#else
+#endif %% EXEC_LIBS
+#endif %% STRIPPED_CORE

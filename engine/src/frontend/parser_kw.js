@@ -1,0 +1,329 @@
+////////////////////////////////////////////////////////////////////////////////
+//Keywords
+////
+//Global keywords
+const KW_recursive_q = "recursive?";
+const KW_recursive = "recursive";
+const KW_action = "action";
+const KW__debug = "_debug";
+const KW_abort = "abort";
+const KW_assert = "assert";
+const KW_configs = "configs";
+const KW_dispatch = "dispatch";
+const KW_do = "do";
+const KW_elif = "elif";
+const KW_else = "else";
+const KW_env = "env";
+const KW_fail = "fail";
+const KW_false = "false";
+const KW_fn = "fn";
+const KW_if = "if";
+const KW_let = "let";
+const KW_match = "match";
+const KW_none = "none";
+const KW_ok = "ok";
+const KW_parallel = "parallel";
+const KW_sequential = "sequential";
+const KW_pred = "pred";
+const KW_ref = "ref";
+const KW_out = "out";
+const KW_out_q = "out?";
+const KW_inout = "inout";
+const KW_return = "return";
+const KW_some = "some";
+const KW_this = "this";
+const KW_self = "self";
+const KW_switch = "switch";
+const KW_true = "true";
+const KW_type = "type";
+const KW_var = "var";
+const KW_yield = "yield";
+const KW_continue = "continue";
+const KW_under = "_";
+const KW_debug = "debug";
+const KW_release = "release";
+const KW_safety = "safety";
+const KW_spec = "spec";
+const KW_test = "test";
+////
+//Declaration keywords
+const KW_api = "api";
+const KW_agent = "agent";
+const KW_as = "as";
+const KW_concept = "concept";
+const KW_const = "const";
+const KW_declare = "declare";
+const KW_enum = "enum";
+const KW_entity = "entity";
+const KW_ensures = "ensures";
+const KW_field = "field";
+const KW_function = "function";
+const KW_invariant = "invariant";
+const KW_method = "method";
+const KW_namespace = "namespace";
+const KW_of = "of";
+const KW_slice = "slice";
+const KW_provides = "provides";
+const KW_requires = "requires";
+const KW_task = "task";
+const KW_Task = "Task";
+const KW_datatype = "datatype";
+const KW_using = "using";
+const KW_validate = "validate";
+const KW_when = "when";
+const KW_event = "event";
+const KW_status = "status";
+const KW_resource = "resource";
+const KW_predicate = "predicate";
+const KW_softcheck = "softcheck";
+const KW_errtest = "errtest";
+const KW_chktest = "chktest";
+const KW_example = "example";
+//reserved
+const KW_operator = "operator";
+const KeywordStrings = [
+    KW_recursive_q,
+    KW_recursive,
+    KW_api,
+    KW_agent,
+    KW_as,
+    KW_action,
+    KW_configs,
+    KW__debug,
+    KW_do,
+    KW_abort,
+    KW_assert,
+    KW_concept,
+    KW_dispatch,
+    KW_const,
+    KW_declare,
+    KW_debug,
+    KW_elif,
+    KW_else,
+    KW_enum,
+    KW_env,
+    KW_entity,
+    KW_ensures,
+    KW_fail,
+    KW_false,
+    KW_field,
+    KW_fn,
+    KW_function,
+    KW_if,
+    KW_invariant,
+    KW_let,
+    KW_match,
+    KW_method,
+    KW_namespace,
+    KW_none,
+    KW_slice,
+    KW_of,
+    KW_ok,
+    KW_operator,
+    KW_parallel,
+    KW_sequential,
+    KW_pred,
+    KW_predicate,
+    KW_provides,
+    KW_ref,
+    KW_out,
+    KW_out_q,
+    KW_inout,
+    KW_release,
+    KW_return,
+    KW_requires,
+    KW_self,
+    KW_some,
+    KW_safety,
+    KW_spec,
+    KW_switch,
+    KW_task,
+    KW_test,
+    KW_this,
+    KW_true,
+    KW_type,
+    KW_datatype,
+    KW_using,
+    KW_validate,
+    KW_var,
+    KW_when,
+    KW_yield,
+    KW_continue,
+    KW_under,
+    KW_event,
+    KW_status,
+    KW_resource,
+    KW_softcheck,
+    KW_errtest,
+    KW_chktest,
+    KW_example
+].sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+////////////////////////////////////////////////////////////////////////////////
+//Attributes
+const GeneralAttributes = [
+    "private",
+    "internal",
+    "hidden",
+    "public",
+    "sensitive"
+];
+const APIDeclAttributes = [
+    "pure",
+    "deterministic",
+    "idempotent",
+];
+const AgentDeclAttributes = [];
+const InvokeAttributes = [
+    "abstract",
+    "override",
+    "virtual"
+];
+const AllAttributes = [
+    ...GeneralAttributes,
+    ...APIDeclAttributes,
+    ...AgentDeclAttributes,
+    ...InvokeAttributes
+].sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const CoreOnlyAttributes = [
+    "__internal",
+    "__typedeclable",
+    "__keycomparable",
+    "__numeric"
+].sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const TermRestrictions = [
+    "keytype",
+    "numeric",
+    "equiv",
+    "mergeable"
+].sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const TaskConfigs = [
+    "timeout",
+    "retry",
+    "priority"
+];
+////////////////////////////////////////////////////////////////////////////////
+//Symbols
+const SYM_lbrack = "[";
+const SYM_lparen = "(";
+const SYM_lbrace = "{";
+const SYM_lparenbar = "(|";
+const SYM_lbracebar = "{|";
+const SYM_rbrack = "]";
+const SYM_rparen = ")";
+const SYM_rbrace = "}";
+const SYM_rparenbar = "|)";
+const SYM_rbracebar = "|}";
+const SYM_langle = "<";
+const SYM_rangle = ">";
+const SYM_amp = "&";
+const SYM_bar = "|";
+const SYM_at = "@";
+const SYM_atat = "@@";
+const SYM_questionat = "?@";
+const SYM_hash = "#";
+const SYM_bang = "!";
+const SYM_colon = ":";
+const SYM_coloncolon = "::";
+const SYM_coma = ",";
+const SYM_dot = ".";
+const SYM_eq = "=";
+const SYM_semicolon = ";";
+const SYM_question = "?";
+const SYM_questionquestion = "??";
+const SYM_dotdotdot = "...";
+const SYM_HOLE = "$?_";
+const SYM_positive = " +";
+const SYM_negate = " -";
+const SYM_ampamp = " && ";
+const SYM_bangeq = " != ";
+const SYM_bangeqeq = " !== ";
+const SYM_eqeq = " == ";
+const SYM_eqeqeq = " === ";
+const SYM_bigarrow = " => ";
+const SYM_implies = " ==> ";
+const SYM_arrow = " -> ";
+const SYM_barbar = " || ";
+const SYM_plus = " + ";
+const SYM_lt = " < ";
+const SYM_lteq = " <= ";
+const SYM_gt = " > ";
+const SYM_gteq = " >= ";
+const SYM_minus = " - ";
+const SYM_times = " * ";
+const SYM_div = " // ";
+const LeftScanParens = [SYM_lbrack, SYM_lparen, SYM_lbrace, SYM_lparenbar, SYM_lbracebar, SYM_langle];
+const RightScanParens = [SYM_rbrack, SYM_rparen, SYM_rbrace, SYM_rparenbar, SYM_rbracebar, SYM_rangle];
+const StandardSymbols = [
+    SYM_amp,
+    SYM_bar,
+    SYM_at,
+    SYM_bang,
+    SYM_colon,
+    SYM_coloncolon,
+    SYM_coma,
+    SYM_dot,
+    SYM_eq,
+    SYM_semicolon,
+    SYM_question,
+    SYM_questionquestion,
+    SYM_dotdotdot,
+    SYM_HOLE,
+    SYM_atat,
+    SYM_questionat,
+    SYM_hash
+].sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const SpaceRequiredSymbols = [
+    SYM_ampamp,
+    SYM_bangeq,
+    SYM_bangeqeq,
+    SYM_eqeq,
+    SYM_eqeqeq,
+    SYM_bigarrow,
+    SYM_implies,
+    SYM_arrow,
+    SYM_barbar,
+    SYM_plus,
+    SYM_lt,
+    SYM_lteq,
+    SYM_gt,
+    SYM_gteq,
+    SYM_minus,
+    SYM_times,
+    SYM_div
+].map((s) => { return s.trim(); })
+    .sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const SpaceFrontSymbols = [
+    SYM_positive,
+    SYM_negate
+].map((s) => { return s.trim(); })
+    .sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const ParenSymbols = [
+    ...LeftScanParens,
+    ...RightScanParens
+].sort((a, b) => { return (a.length !== b.length) ? (b.length - a.length) : ((a !== b) ? (a < b ? -1 : 1) : 0); });
+const SpecialStringFormatTypes = [
+    "FString",
+    "FCString"
+];
+const SpecialPathFormatTypes = [
+    "FPath",
+    "FPathItem",
+    "FPathGlob"
+];
+const SpecialDashResultType = "DashResult";
+const SpecialTaskActionNames = [
+    "onTerm", //Cancel, timout, or not needed (while still running -- see "termcheck")
+    "onError", //Hard error during Task execution and immediate termination
+    "onDrop" //Task result is being dropped / ignored
+];
+const SpecialNominalTypes = [
+    ...SpecialStringFormatTypes,
+    ...SpecialPathFormatTypes,
+    SpecialDashResultType
+];
+export { KeywordStrings, GeneralAttributes, APIDeclAttributes, AgentDeclAttributes, InvokeAttributes, AllAttributes, CoreOnlyAttributes, TermRestrictions, LeftScanParens, RightScanParens, SpaceRequiredSymbols, SpaceFrontSymbols, StandardSymbols, ParenSymbols, SpecialStringFormatTypes, SpecialPathFormatTypes, SpecialDashResultType, SpecialNominalTypes, SpecialTaskActionNames, TaskConfigs, KW_recursive_q, KW_recursive, KW_api, KW_agent, KW_as, KW_action, KW_configs, KW__debug, KW_do, KW_abort, KW_assert, KW_concept, KW_const, KW_declare, KW_debug, KW_dispatch, KW_elif, KW_else, KW_enum, KW_env, KW_entity, KW_ensures, KW_fail, KW_false, KW_field, KW_fn, KW_function, KW_if, KW_invariant, KW_let, KW_match, KW_method, KW_namespace, KW_none, KW_slice, KW_of, KW_ok, 
+// KW_operator, //TODO: reserved for future use
+KW_parallel, KW_sequential, KW_pred, KW_predicate, KW_provides, KW_ref, KW_out, KW_out_q, KW_inout, KW_release, KW_return, KW_requires, KW_self, KW_some, KW_safety, KW_spec, KW_switch, KW_task, KW_Task, KW_test, KW_this, KW_true, KW_type, KW_datatype, KW_using, KW_validate, KW_var, KW_when, KW_yield, 
+// KW_continue, //TODO: reserved for future use
+KW_under, KW_event, KW_resource, KW_status, KW_softcheck, KW_errtest, KW_chktest, KW_example, SYM_lbrack, SYM_lparen, SYM_lbrace, SYM_langle, SYM_lparenbar, SYM_lbracebar, SYM_rbrack, SYM_rparen, SYM_rbrace, SYM_rangle, SYM_rparenbar, SYM_rbracebar, SYM_amp, SYM_bar, SYM_at, SYM_atat, SYM_questionat, SYM_hash, SYM_bang, SYM_colon, SYM_coloncolon, SYM_coma, SYM_dot, SYM_eq, SYM_semicolon, SYM_question, SYM_questionquestion, SYM_dotdotdot, SYM_HOLE, SYM_positive, SYM_negate, SYM_ampamp, SYM_bangeq, SYM_bangeqeq, SYM_eqeq, SYM_eqeqeq, SYM_bigarrow, SYM_implies, SYM_arrow, SYM_barbar, SYM_plus, SYM_lt, SYM_lteq, SYM_gt, SYM_gteq, SYM_minus, SYM_times, SYM_div };
+//# sourceMappingURL=parser_kw.js.map

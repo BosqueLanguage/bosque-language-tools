@@ -1,158 +1,588 @@
 {
-	"name": "Bosque",
-	"patterns": [
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#string-double"
-		},
-		{
-			"include": "#constants"
-		},
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#types"
-		},
-		{
-			"include": "#variables"
-		}
-	],
-	"repository": {
-		"comments": {
-			"patterns": [
-				{
-					"captures": {
-						"1": {
-							"name": "punctuation.definition.comment.bosque"
-						}
-					},
-					"begin": "%%",
-					"end": "$",
-					"name": "comment.line.double-dash.bosque"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "punctuation.definition.comment.bosque"
-						}
-					},
-					"begin": "%\\*\\*",
-					"end": "\\*%",
-					"name": "comment.multiline.double-dash.bosque"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "punctuation.definition.comment.bosque"
-						}
-					},
-					"begin": "%\\*",
-					"end": "\\*%",
-					"name": "comment.multiline.double-dash.bosque"
-				}
-			]
-		},
-		"string-double": {
-			"name": "string.quoted.double.bosque",
-			"begin": "\"",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.begin.bosque"
-				}
-			},
-			"end": "\"",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.end.bosque"
-				}
-			},
-			"patterns": [
-				{
-					"name": "constant.character.escape.bosque",
-					"match": "'"
-				}
-			]
-		},
-		"string-single": {
-			"name": "string.quoted.single.bosque",
-			"begin": "'",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.begin.bosque"
-				}
-			},
-			"end": "'",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.end.bosque"
-				}
-			},
-			"patterns": [
-				{
-					"name": "constant.character.escape.bosque",
-					"match": "\""
-				}
-			]
-		},
-		"keywords": {
-			"patterns": [
-				{
-					"name": "keyword.control.bosque",
-					"match": "\\b(abort|assert|if|elif|else|fn|pred|let|match|ref|return|switch|then|var|yield|ensures|invariant|example|requires|validate|softcheck|errtest|chektest)\\b"
-				},
-				{
-					"name": "keyword.bosque",
-					"match": "\\b(recursive?|recursive|action|_debug|abort|assert|bsqon|example|do|if|elif|else|fail|fn|pred|implements|let|match|ref|return|switch|then|type|var|yield|debug|release|safety|spec|test|api|as|concept|const|declare|enum|entity|ensures|field|function|invariant|method|namespace|of|provides|requires|in|task|datatype|using|validate|when|event|status|resource|predicate|softcheck|errtest|chektest|operator|variant)\\b"
-				}
-			]
-		},
-		"constants": {
-			"patterns": [
-				{
-					"name": "constant.numeric.bosque",
-					"match": "\\b(([0-9]+)[inIN])\\b"
-				},
-				{
-					"name": "constant.numeric.bosque",
-					"match": "\\b((([0-9]+))[R]|(([0-9]+)/([0-9]+)[R]))\\b"
-				},
-				{
-					"name": "constant.numeric.bosque",
-					"match": "\\b(([0-9]+.[0-9]+([eE][-+]?[0-9]+)?[fd]))\\b"
-				},
-				{
-					"name": "constant.numeric.bosque",
-					"match": "\\b([0-9]+)\\b"
-				},
-				{
-					"name": "constant.language",
-					"match": "\\b(none|true|false|fail|ok|some|result|option|env|this|self)\\b"
-				}
-			]
-		},
-		"types": {
-			"patterns": [
-				{
-					"name": "entity.name.type.bosque",
-					"match": "\\b((([A-Z][_a-zA-Z0-9]+)::)*([A-Z][_a-zA-Z0-9]+))\\b"
-				},
-				{
-					"name": "entity.name.type.bosque",
-					"match": "\\b[A-Z]\\b"
-				}
-			]
-		},
-		"variables": {
-			"patterns": [
-				{
-					"name": "variable.name",
-					"match": "\\b([$]|([$]?([_a-z]|([_a-z][_a-zA-Z0-9]+))))\\b"
-				}
-			]
-		}
-	},
-	"scopeName": "source.bsq"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Bosque",
+  "scopeName": "source.bosque",
+  "fileTypes": [
+    "bsq"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#directives"
+    },
+    {
+      "include": "#declarations"
+    },
+    {
+      "include": "#literals"
+    },
+    {
+      "include": "#attributes"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#support"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "attributes": {
+      "patterns": [
+        {
+          "match": "\\b(?:private|internal|hidden|public|sensitive|pure|deterministic|idempotent|abstract|override|virtual|__internal|__typedeclable|__keycomparable|__numeric)\\b(?:\\[[^\\]\\n]*\\])?",
+          "name": "storage.modifier.bosque"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "begin": "%\\*\\* ",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.begin.bosque"
+            }
+          },
+          "end": " \\*\\*%",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.end.bosque"
+            }
+          },
+          "name": "comment.block.documentation.bosque"
+        },
+        {
+          "begin": "%\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.begin.bosque"
+            }
+          },
+          "end": "\\*%",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.end.bosque"
+            }
+          },
+          "name": "comment.block.bosque"
+        },
+        {
+          "match": "%%.*$",
+          "name": "comment.line.double-percent.bosque"
+        }
+      ]
+    },
+    "declarations": {
+      "patterns": [
+        {
+          "match": "\\b(namespace)\\b(\\s+)([A-Z][_a-zA-Z0-9]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.namespace.bosque"
+            },
+            "3": {
+              "name": "entity.name.namespace.bosque"
+            }
+          }
+        },
+        {
+          "match": "\\b(using)\\b(\\s+)([A-Z][_a-zA-Z0-9]*(?:::[A-Z][_a-zA-Z0-9]*)*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.import.bosque"
+            },
+            "3": {
+              "name": "entity.name.namespace.bosque"
+            }
+          }
+        },
+        {
+          "match": "\\b(api|agent|concept|datatype|entity|enum|type)\\b(\\s+)([A-Z][_a-zA-Z0-9]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.bosque"
+            },
+            "3": {
+              "name": "entity.name.type.bosque"
+            }
+          }
+        },
+        {
+          "match": "\\b(function|method|predicate|task|validate|action)\\b(\\s+)([_a-zA-Z][_a-zA-Z0-9]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.function.bosque"
+            },
+            "3": {
+              "name": "entity.name.function.bosque"
+            }
+          }
+        },
+        {
+          "match": "\\b(const|field|event|resource|status)\\b(\\s+)([_a-zA-Z][_a-zA-Z0-9]*)",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.bosque"
+            },
+            "3": {
+              "name": "variable.other.definition.bosque"
+            }
+          }
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "match": "^\\s*#(if)\\b\\s+([A-Z][_A-Z0-9]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.conditional.bosque"
+            },
+            "2": {
+              "name": "entity.name.constant.preprocessor.bosque"
+            }
+          },
+          "name": "meta.preprocessor.conditional.bosque"
+        },
+        {
+          "match": "^\\s*#(?:else|endif)\\b",
+          "name": "meta.preprocessor.conditional.bosque"
+        }
+      ]
+    },
+    "interpolation": {
+      "patterns": [
+        {
+          "begin": "\\$\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.interpolation.begin.bosque"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.interpolation.end.bosque"
+            }
+          },
+          "name": "meta.interpolation.bosque",
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#literals"
+            },
+            {
+              "include": "#attributes"
+            },
+            {
+              "include": "#keywords"
+            },
+            {
+              "include": "#support"
+            },
+            {
+              "include": "#types"
+            },
+            {
+              "include": "#variables"
+            },
+            {
+              "include": "#operators"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(?:true|false|none|some|ok|fail)\\b",
+          "name": "constant.language.bosque"
+        },
+        {
+          "match": "\\b(?:self|this)\\b",
+          "name": "variable.language.bosque"
+        },
+        {
+          "match": "\\b(?:recursive\\?|out\\?)(?![_a-zA-Z0-9])",
+          "name": "keyword.control.bosque"
+        },
+        {
+          "match": "(?<![$_a-zA-Z0-9])(?:_debug|_)(?![_a-zA-Z0-9])",
+          "name": "keyword.control.bosque"
+        },
+        {
+          "match": "\\b(?:abort|action|agent|api|as|assert|chktest|concept|configs|const|continue|datatype|debug|declare|dispatch|do|elif|else|ensures|entity|enum|env|errtest|event|example|field|fn|function|if|inout|invariant|let|match|method|namespace|of|operator|out|parallel|pred|predicate|provides|recursive|ref|release|requires|resource|return|safety|sequential|slice|softcheck|spec|status|switch|task|Task|test|type|using|validate|var|when|yield)\\b",
+          "name": "keyword.control.bosque"
+        }
+      ]
+    },
+    "literals": {
+      "patterns": [
+        {
+          "match": "uuid[47]\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\}",
+          "name": "constant.other.uuid.bosque"
+        },
+        {
+          "match": "sha3\\{[A-Fa-f0-9]{64}\\}",
+          "name": "constant.other.hash.bosque"
+        },
+        {
+          "match": "0x\\[\\]|0x\\[[A-Fa-f0-9]{1,2}(?:,[A-Fa-f0-9]{1,2})*\\]",
+          "name": "constant.other.bytebuffer.bosque"
+        },
+        {
+          "match": "0x[A-Fa-f0-9]{1,2}\\b",
+          "name": "constant.numeric.integer.hex.bosque"
+        },
+        {
+          "match": "@(?:0|\\+0|[+-]?[1-9][0-9]*)",
+          "name": "constant.numeric.integer.index.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}@(?:\\{[a-zA-Z0-9/, _-]+\\}|[A-Z]+)",
+          "name": "constant.numeric.datetime.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z",
+          "name": "constant.numeric.datetime.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}",
+          "name": "constant.numeric.datetime.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]{4}-[0-9]{2}-[0-9]{2}",
+          "name": "constant.numeric.date.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]{2}:[0-9]{2}:[0-9]{2}",
+          "name": "constant.numeric.time.bosque"
+        },
+        {
+          "match": "[+-][0-9]{1,4}-[0-9]{1,10}-[0-9]{1,10}T[0-9]{1,10}:[0-9]{1,10}:[0-9]{1,10}\\.[0-9]{18}Z",
+          "name": "constant.numeric.datetime.delta.bosque"
+        },
+        {
+          "match": "[+-][0-9]{1,4}-[0-9]{1,10}-[0-9]{1,10}T[0-9]{1,10}:[0-9]{1,10}:[0-9]{1,10}",
+          "name": "constant.numeric.datetime.delta.bosque"
+        },
+        {
+          "match": "[+-][0-9]{1,4}-[0-9]{1,10}-[0-9]{1,10}",
+          "name": "constant.numeric.date.delta.bosque"
+        },
+        {
+          "match": "[+-][0-9]{1,10}:[0-9]{1,10}:[0-9]{1,10}",
+          "name": "constant.numeric.time.delta.bosque"
+        },
+        {
+          "match": "[+-](?:[0-9]+\\.[0-9]+(?:[eE][-+]?[0-9]+)?)ds\\b",
+          "name": "constant.numeric.float.bosque"
+        },
+        {
+          "match": "[+-](?:0|[0-9]+)dl\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]+\\.[0-9]+lat[+-][0-9]+\\.[0-9]+long\\b",
+          "name": "constant.numeric.float.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]+\\.[0-9]+(?:[eE][-+]?[0-9]+)?[+-][0-9]+\\.[0-9]+(?:[eE][-+]?[0-9]+)?j\\b",
+          "name": "constant.numeric.float.complex.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]+\\.[0-9]+dd\\b",
+          "name": "constant.numeric.float.bosque"
+        },
+        {
+          "match": "(?:ChkInt::npos|(?:0|\\+0|[+-]?[1-9][0-9]*)I)\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "match": "(?:ChkNat::npos|(?:0|\\+0|[+-]?[1-9][0-9]*)N)\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "match": "(?:0|\\+0|[+-]?[1-9][0-9]*)(?:/(?:[1-9][0-9]*))?R\\b",
+          "name": "constant.numeric.rational.bosque"
+        },
+        {
+          "match": "(?:0|\\+0|[+-]?[1-9][0-9]*)l\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "match": "(?:0|\\+0|[+-]?[1-9][0-9]*)i\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "match": "(?:0|\\+0|[+-]?[1-9][0-9]*)n\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]+\\.[0-9]+(?:[eE][-+]?[0-9]+)?d\\b",
+          "name": "constant.numeric.float.bosque"
+        },
+        {
+          "match": "[+-]?[0-9]+\\.[0-9]+(?:[eE][-+]?[0-9]+)?f\\b",
+          "name": "constant.numeric.float.bosque"
+        },
+        {
+          "match": "(?:0|\\+0|[+-]?[1-9][0-9]*)\\b",
+          "name": "constant.numeric.integer.bosque"
+        },
+        {
+          "begin": "c\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.double.char.bosque"
+        },
+        {
+          "begin": "\\$\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.double.interpolated.bosque",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.double.bosque"
+        },
+        {
+          "begin": "c'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.single.char.bosque"
+        },
+        {
+          "begin": "\\$'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.single.interpolated.bosque",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.single.bosque"
+        },
+        {
+          "begin": "\\$[gf]?\\\\",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "\\\\",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.other.path.interpolated.bosque",
+          "patterns": [
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "begin": "[gf]?\\\\",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "\\\\",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.quoted.other.path.bosque"
+        },
+        {
+          "begin": "/(?!/)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bosque"
+            }
+          },
+          "end": "/[cp]?",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bosque"
+            }
+          },
+          "name": "string.regexp.bosque"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "match": "(?<=\\s)(?:&&|!==|!=|===|==|=>|==>|->|\\|\\||\\+|<=|<|>=|>|-|\\*|//)(?=\\s)",
+          "name": "keyword.operator.bosque"
+        },
+        {
+          "match": "(?<!\\S)[+-](?=[^0-9+-])",
+          "name": "keyword.operator.bosque"
+        },
+        {
+          "match": "::|@@|\\?@|\\?\\?|\\.\\.\\.|\\$\\?_",
+          "name": "keyword.operator.bosque"
+        },
+        {
+          "match": "[&|@!:=;?#.,]",
+          "name": "keyword.operator.bosque"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "match": "\\(\\||\\{\\||\\|\\)|\\|\\}",
+          "name": "punctuation.section.group.bosque"
+        },
+        {
+          "match": "(?<!\\s)<(?=\\S)|(?<=\\S)<(?!\\s)",
+          "name": "punctuation.definition.typeparameters.begin.bosque"
+        },
+        {
+          "match": "(?<!\\s)>(?=\\S)|(?<=\\S)>(?!\\s)",
+          "name": "punctuation.definition.typeparameters.end.bosque"
+        },
+        {
+          "match": "[()\\[\\]{}]",
+          "name": "punctuation.section.brackets.bosque"
+        }
+      ]
+    },
+    "support": {
+      "patterns": [
+        {
+          "match": "\\b(?:keytype|numeric|equiv|mergeable|timeout|retry|priority)\\b",
+          "name": "support.type.property-name.bosque"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "match": "\\b(?:None|Bool|Nat|Int|ChkInt|ChkNat|Rational|Float|Decimal|DecimalDegree|LatLongCoordinate|Complex|ByteBuffer|UUIDv4|UUIDv7|SHAContentHash|TZDateTime|TAITime|PlainDate|PlainTime|LogicalTime|ISOTimestamp|DeltaDateTime|DeltaSeconds|DeltaLogicalTime|DeltaISOTimestamp|Byte|CChar|UnicodeChar|CCharBuffer|UnicodeCharBuffer|String|CString|Regex|CRegex|Path|PathFragment|Glob|FString|FCString|FPath|FPathItem|FPathGlob|DashResult)\\b",
+          "name": "support.type.builtin.bosque"
+        },
+        {
+          "match": "\\b[A-Z][_a-zA-Z0-9]*(?=::)",
+          "name": "entity.name.namespace.bosque"
+        },
+        {
+          "match": "\\b[A-Z]\\b",
+          "name": "entity.name.type.parameter.bosque"
+        },
+        {
+          "match": "\\b[A-Z][_a-zA-Z0-9]*\\b",
+          "name": "entity.name.type.bosque"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "match": "\\$\\?_",
+          "name": "constant.other.placeholder.bosque"
+        },
+        {
+          "match": "\\$[_a-zA-Z][_a-zA-Z0-9]*",
+          "name": "variable.other.environment.bosque"
+        }
+      ]
+    }
+  }
 }

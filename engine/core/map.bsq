@@ -1,0 +1,34 @@
+namespace Core;
+
+namespace Map {
+}
+
+__internal entity MapEntry<K: keytype, V> {
+}
+
+__internal entity Map<K: keytype, V> {
+#if STRIPPED_CORE
+#else
+    method empty(): Bool {
+        return MapOps::s_map_empty<K, V>(this);
+    }
+
+    method size(): Nat {
+        return MapOps::s_map_size<K, V>(this);
+    }
+
+    method has(k: K): Bool {
+        return MapOps::s_map_has<K, V>(this, k);
+    }
+
+    method get(k: K): V 
+        requires this.has(k);
+    {
+        return MapOps::s_map_get<K, V>(this, k);
+    }
+
+    method tryGet(k: K): Option<V> {
+        return MapOps::s_map_tryget<K, V>(this, k);
+    }
+#endif %% STRIPPED_CORE
+}

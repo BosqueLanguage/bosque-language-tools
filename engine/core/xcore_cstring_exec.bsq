@@ -1,0 +1,14 @@
+namespace Core;
+
+#if STRIPPED_CORE
+#else
+#if EXEC_LIBS
+
+namespace CStringOps {
+    function s_empty(s: CString): Bool = @cstring_empty;
+    function s_size(s: CString): Nat = @cstring_size;
+}
+
+#else
+#endif %% EXEC_LIBS
+#endif %% STRIPPED_CORE

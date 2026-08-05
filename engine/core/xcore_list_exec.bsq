@@ -1,0 +1,43 @@
+namespace Core;
+
+#if STRIPPED_CORE
+#else
+#if EXEC_LIBS
+namespace ListOps {
+    function s_list_range_nat(start: Nat, end: Nat): List<Nat> = @list_range_nat;
+    function s_list_range_int(start: Int, end: Int): List<Int> = @list_range_int;
+
+    function s_list_zip<T, U, J>(l1: List<T>, l2: List<U>, ssize: Nat): List<(|T, U|)> = @list_zip;
+
+    function s_list_empty<T>(l: List<T>): Bool = @list_empty;
+    function s_list_size<T>(l: List<T>): Nat = @list_size;
+
+    function s_list_front<T>(l: List<T>): T = @list_front;
+    function s_list_back<T>(l: List<T>): T = @list_back;
+    function s_list_get<T>(l: List<T>, idx: Nat): T = @list_get;
+
+    function s_list_pushfront<T>(l: List<T>, v: T): List<T> = @list_pushfront;
+    function s_list_pushback<T>(l: List<T>, v: T): List<T> = @list_pushback;
+    function s_list_insert<T>(l: List<T>, idx: Nat, v: T): List<T> = @list_insert;
+    function s_list_set<T>(l: List<T>, idx: Nat, v: T): List<T> = @list_set;
+
+    recursive? function s_list_allof<T>(l: List<T>, p: recursive? pred(T) -> Bool): Bool = @list_allof;
+    recursive? function s_list_noneof<T>(l: List<T>, p: recursive? pred(T) -> Bool): Bool = @list_noneof;
+    recursive? function s_list_someof<T>(l: List<T>, p: recursive? pred(T) -> Bool): Bool = @list_someof;
+
+    recursive? function s_list_map<T, U>(l: List<T>, f: recursive? fn(T) -> U): List<U> = @list_map;
+    recursive? function s_list_mapidx<T, U>(l: List<T>, f: recursive? fn(T, Nat) -> U): List<U> = @list_mapidx;
+
+    recursive? function s_list_filter<T>(l: List<T>, p: recursive? pred(T) -> Bool): List<T> = @list_filter;
+
+    recursive? function s_list_filtermap<T, U>(l: List<T>, p: recursive? pred(T) -> Bool, f: recursive? fn(T) -> U): List<U> = @list_filtermap;
+
+    recursive? function s_list_min<T: keytype>(l: List<T>): T = @list_min;
+    recursive? function s_list_minfun<T>(l: List<T>, cmp: recursive? pred(T, T) -> Bool): T = @list_minfun;
+
+    function s_list_sum<T: numeric>(l: List<T>, zero: T): T = @list_sum;
+    function s_list_sumfun<T>(l: List<T>, init: T, op: recursive? fn(T, T) -> T): T = @list_sumfun;
+}
+#else
+#endif %% EXEC_LIBS
+#endif %% STRIPPED_CORE

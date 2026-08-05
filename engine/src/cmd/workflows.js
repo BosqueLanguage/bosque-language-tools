@@ -1,0 +1,143 @@
+import * as fs from "fs";
+import * as path from "path";
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { PackageConfig } from "../frontend/build_decls.js";
+import { Parser } from "../frontend/parser.js";
+import { TypeChecker } from "../frontend/checker.js";
+import { Status } from "./status_output.js";
+const bosque_dir = path.join(__dirname, "../../");
+function workflowLoadUserSrc(files) {
+    try {
+        let code = [];
+        for (let i = 0; i < files.length; ++i) {
+            const realpath = path.resolve(files[i]);
+            Status.output(`    ++ loading ${realpath}...\n`);
+            code.push({ srcpath: realpath, filename: path.basename(realpath), contents: fs.readFileSync(realpath).toString() });
+        }
+        return code;
+    }
+    catch (ex) {
+        Status.error(`Failed to load user src file!\n`);
+        return undefined;
+    }
+}
+function workflowLoadCoreSrc() {
+    try {
+        let code = [];
+        const coredir = path.join(bosque_dir, "core");
+        const corefiles = fs.readdirSync(coredir);
+        for (let i = 0; i < corefiles.length; ++i) {
+            const cfpath = path.join(coredir, corefiles[i]);
+            code.push({ srcpath: cfpath, filename: corefiles[i], contents: fs.readFileSync(cfpath).toString() });
+        }
+        return code;
+    }
+    catch (ex) {
+        Status.error(`Failed to load core src file!\n`);
+        return undefined;
+    }
+}
+function workflowLoadAllSrc(files) {
+    const core = workflowLoadCoreSrc();
+    const user = workflowLoadUserSrc(files);
+    if (core === undefined || user === undefined) {
+        return undefined;
+    }
+    else {
+        return [...core, ...user];
+    }
+}
+function parseArgv(dir, ...argv) {
+    let fullargs = argv.slice(2);
+    if (fullargs.length === 0) {
+        Status.error("No input files specified!\n");
+        process.exit(1);
+    }
+    let mainns = "Main";
+    let mainnsidx = fullargs.findIndex((v) => v === "--namespace");
+    if (mainnsidx !== -1) {
+        mainns = fullargs[mainnsidx + 1];
+        fullargs = fullargs.slice(0, mainnsidx).concat(fullargs.slice(mainnsidx + 2));
+    }
+    let outdir = path.join(path.dirname(path.resolve(fullargs[0])), dir);
+    let outdiridx = fullargs.findIndex((v) => v === "--output");
+    if (outdiridx !== -1) {
+        outdir = fullargs[outdiridx + 1];
+        fullargs = fullargs.slice(0, outdiridx).concat(fullargs.slice(outdiridx + 2));
+    }
+    return [fullargs, mainns, outdir];
+}
+function generateASMGeneral(usercode, macrodefs) {
+    const corecode = workflowLoadCoreSrc();
+    const pstart = Date.now();
+    Status.output(`Parsing...\n`);
+    const parseres = Parser.parse(corecode, usercode.src, macrodefs);
+    const pend = Date.now();
+    let tasm = undefined;
+    let parseerrors = [];
+    let typeerrors = [];
+    if (Array.isArray(parseres)) {
+        parseerrors = parseres;
+    }
+    else {
+        Status.output(`    Parsing successful [${(pend - pstart) / 1000}s]\n\n`);
+        const tcstart = Date.now();
+        Status.output(`Type checking...\n`);
+        tasm = parseres;
+        typeerrors = TypeChecker.checkAssembly(tasm);
+        const tcend = Date.now();
+        if (typeerrors.length === 0) {
+            Status.output(`    Type checking successful [${(tcend - tcstart) / 1000}s]\n\n`);
+        }
+    }
+    return [tasm, parseerrors, typeerrors];
+}
+function generateASMTest(usercode) {
+    return generateASMGeneral(usercode, ["EXEC_LIBS", "STRIPPED_CORE"]);
+}
+function generateASMExec(usercode) {
+    return generateASMGeneral(usercode, ["EXEC_LIBS"]);
+}
+function generateASMSMT(usercode) {
+    // TODO: support for smt libraries in bosque (or perhaps unnecessary?)
+    return generateASMGeneral(usercode, []);
+}
+function getSimpleFilename(fn) {
+    return path.basename(fn);
+}
+function checkAssembly(srcfiles, asmtype) {
+    const lstart = Date.now();
+    Status.output("Loading user sources...\n");
+    const usersrcinfo = workflowLoadUserSrc(srcfiles);
+    if (usersrcinfo === undefined) {
+        Status.error("Failed to load user sources!\n");
+        return;
+    }
+    const dend = Date.now();
+    Status.output(`    User sources loaded [${(dend - lstart) / 1000}s]\n\n`);
+    const userpackage = new PackageConfig([], usersrcinfo);
+    const [asm, perrors, terrors] = asmtype === "cpp"
+        ? generateASMExec(userpackage)
+        : generateASMSMT(userpackage);
+    if (perrors.length === 0 && terrors.length === 0) {
+        return asm;
+    }
+    else {
+        Status.error("Failed to generate assembly!\n");
+        //TODO -- need to do filename in error and sort nicely
+        perrors.sort((a, b) => (a.srcfile !== b.srcfile) ? a.srcfile.localeCompare(b.srcfile) : a.sinfo.line - b.sinfo.line);
+        for (let i = 0; i < perrors.length; ++i) {
+            Status.error(`Parser Error @ ${getSimpleFilename(perrors[i].srcfile)}#${perrors[i].sinfo.line}: ${perrors[i].message}\n`);
+        }
+        terrors.sort((a, b) => (a.file !== b.file) ? a.file.localeCompare(b.file) : a.line - b.line);
+        if (terrors.length !== 0) {
+            for (let i = 0; i < terrors.length; ++i) {
+                Status.error(`Type Error @ ${getSimpleFilename(terrors[i].file)}#${terrors[i].line}: ${terrors[i].msg}\n`);
+            }
+        }
+        return undefined;
+    }
+}
+export { workflowLoadUserSrc, workflowLoadCoreSrc, workflowLoadAllSrc, generateASMTest, generateASMExec, generateASMSMT, checkAssembly, parseArgv };
+//# sourceMappingURL=workflows.js.map
